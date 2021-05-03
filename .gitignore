@@ -127,3 +127,16 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.idea
+.vscode
+
+
+# pretrained models
+pretrained_models/*
+
+train_test.bat
+train_test.sh
+
+figs/
+image_data/
