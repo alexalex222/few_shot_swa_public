@@ -10,9 +10,7 @@ import matplotlib
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 from sklearn.metrics import mean_squared_error
-from sklearn.linear_model import Ridge, BayesianRidge
-
-sys.path.append(os.getcwd() + '/..')
+from sklearn.linear_model import BayesianRidge
 from models.nn_regression import RegressionNN
 
 plt.style.use('ggplot')
@@ -35,10 +33,7 @@ if __name__ == '__main__':
     swa_model_path = os.path.join(model_save_root, 'sin_swa_model_{}.pth'.format(args.trial))
 
     # %%
-    if os.name == 'nt':
-        sin_data = torch.load('D:\\Temp\\torch_dataset\\regression\\sin_data_few_shot.pt')
-    else:
-        sin_data = torch.load('/media/kuilin/research/temp/torch_dataset/regression/sin_data_few_shot.pt')
+    sin_data = torch.load('./data/regression/sin_data_few_shot.pt')
     x_train = sin_data['x_train']
     x_test = sin_data['x_test']
     y_train = sin_data['y_train']

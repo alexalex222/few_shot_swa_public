@@ -14,7 +14,7 @@ from dataset.cifar import MetaCIFAR100
 from dataset.cub import MetaCUBImageFolder
 from dataset.transform_cfg import transforms_options
 
-from eval.meta_eval import meta_test, meta_test_lr_torch
+from eval.meta_eval import meta_test
 from eval.util import plot_calibration_error
 from eval.util import calc_calibration_score
 from util import parse_option_eval
@@ -184,18 +184,6 @@ def main():
     ax.set_xlabel("Temperature")
     ax.set_ylabel("Calibration Score")
     plt.show()
-
-
-    """
-    miniImageNet 1-shot 4.6
-    miniImageNet 5-shot 3.5
-    tieredImageNet 1-shot  6.0
-    tieredImageNet 5-shot 4.0
-    CIFAR-FS 1-shot 4.6
-    CIFAR-FS 5-shot 2.7
-    FC100 1-shot 2.8
-    FC100 5-shot 2.1
-    """
 
 
 if __name__ == '__main__':

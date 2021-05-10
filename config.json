@@ -1,6 +1,6 @@
 {
-  "miniImageNet": "./image_data/miniImageNet_pickle",
-  "tieredImageNet": "/path_to_data/tieredImagenet",
-  "CIFAR-FS": "/path_to_data/CIFAR-FS",
-  "FC100": "/path_to_data/FC100"
+  "miniImageNet": "./data/miniImageNet_pickle",
+  "tieredImageNet": "./data/tieredImagenet",
+  "CIFAR-FS": "./data/CIFAR-FS",
+  "FC100": "./data/FC100"
 }

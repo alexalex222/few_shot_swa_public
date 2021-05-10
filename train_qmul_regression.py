@@ -20,10 +20,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 # %% load data
-if os.name == 'nt':
-    train_file_path = 'D:\\data\\research\\image_data\\QMUL\\qmul_train.pickle'
-else:
-    train_file_path = '/media/kuilin/research/data/QMUL//qmul_train.pickle'
+train_file_path = './data/QMUL//qmul_train.pickle'
 
 train_file = open(train_file_path, 'rb')
 train_data = pickle.load(train_file)

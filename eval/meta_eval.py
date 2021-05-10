@@ -12,7 +12,6 @@ from sklearn.utils.extmath import softmax
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-from .top_layer import BayesianLogisticClassification, fit_bayesian_classifier
 from models.cos_classifier import CosineClassifier
 from models.ridge_logistic_regression import RidgeLogisticRegression
 
@@ -164,60 +163,6 @@ def meta_test(net, testloader, use_logit=False, is_norm=True, classifier='LR', o
             train_y_true.append(support_ys)
 
     return mean_confidence_interval(acc), y_pred, y_prob, y_true, train_scores_all, train_y_true
-
-
-def meta_test_lr_torch(net, test_loader):
-    net = net.eval()
-    acc = []
-    y_true = []
-    y_pred = []
-    y_prob = []
-
-
-    for idx, data in tqdm(enumerate(test_loader)):
-        support_xs, support_ys, query_xs, query_ys = data
-        support_xs = support_xs.cuda()
-        query_xs = query_xs.cuda()
-        batch_size, _, channel, height, width = support_xs.size()
-        support_xs = support_xs.view(-1, channel, height, width)
-        query_xs = query_xs.view(-1, channel, height, width)
-
-        with torch.no_grad():
-            feat_support, _ = net(support_xs, is_feat=True)
-            feat_query, _ = net(query_xs, is_feat=True)
-        support_features = feat_support[-1].view(support_xs.size(0), -1)
-        query_features = feat_query[-1].view(query_xs.size(0), -1)
-
-        support_features = normalize(support_features)
-        query_features = normalize(query_features)
-
-        support_features = support_features.detach()
-        query_features = query_features.detach()
-
-        support_ys = support_ys.reshape(-1)
-        support_ys = support_ys.cuda()
-        query_ys = query_ys.reshape(-1)
-
-        feature_dim = support_features.shape[-1]
-
-        # cls = LogisticRegressionTemperature(num_classes=5, feature_dim=feature_dim)
-        # fit_classifier(cls, support_features, support_ys)
-
-        cls = BayesianLogisticClassification(num_classes=5, feature_dim=feature_dim)
-        fit_bayesian_classifier(cls, support_features, support_ys)
-
-        scores = cls(query_features)
-        # a = torch.nn.functional.softmax(scores, dim=-1)
-        # print(a)
-        query_ys_prob = torch.nn.functional.softmax(scores, dim=-1).detach().cpu().numpy()
-        query_ys_pred = torch.nn.functional.softmax(scores, dim=-1).argmax(-1).detach().cpu().numpy()
-
-
-        acc.append(metrics.accuracy_score(query_ys, query_ys_pred))
-        y_pred.append(query_ys_pred)
-        y_true.append(query_ys)
-        y_prob.append(query_ys_prob)
-    return mean_confidence_interval(acc), y_pred, y_prob, y_true
 
 
 def proto(support, support_ys, query, opt):

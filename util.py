@@ -183,7 +183,7 @@ def parse_option_pretrain():
     parser.add_argument('--momentum', type=float, default=0.9, help='momentum')
     parser.add_argument('--adam', action='store_true', help='use adam optimizer')
     parser.add_argument('--swa', action='store_true', help='stochastic weight average')
-    parser.add_argument('--swa_lr', type=float, default=0.05, help='SWA learning rate')
+    parser.add_argument('--swa_lr', type=float, default=0.02, help='SWA learning rate')
     parser.add_argument('--swa_start', type=int, default=100, help='the number of epoch to start swa')
     parser.add_argument('--resume', action='store_true', help='resume training from a checkpoint')
     parser.add_argument('--start_epoch', type=int, default=1, help='the start epoch number')
@@ -195,8 +195,6 @@ def parse_option_pretrain():
                         choices=['miniImageNet', 'tieredImageNet',
                                 'CIFAR-FS', 'FC100'])
     parser.add_argument('--transform', type=str, default='A', choices=transforms_list)
-    parser.add_argument('--use_trainval', action='store_true', help='use trainval set')
-    parser.add_argument('--use_all', action='store_true', help='use all dataset for cross domain few-shot learning')
     parser.add_argument('--mix_up', action='store_true', help='use mix up training samples')
     parser.add_argument('--mix_up_alpha', type=float, default=1.0, help='hyper-parameter in beta distribution in mix up')
 
@@ -205,7 +203,7 @@ def parse_option_pretrain():
     parser.add_argument('--update_bn', action='store_true', help='update bn layers')
     # specify folder
     parser.add_argument('--model_path', type=str, default='', help='path to save model')
-    parser.add_argument('--tb_path', type=str, default='D:/temp/tb_log', help='path to tensorboard')
+    parser.add_argument('--tb_path', type=str, default='./pretrained_models', help='path to tensorboard')
     parser.add_argument('--data_root', type=str, default='', help='path to data root')
     parser.add_argument('--ckpt_name', type=str, default='ckpt_100.pth', help='checkpoint name')
     # meta setting
@@ -233,12 +231,6 @@ def parse_option_pretrain():
 
     if opt.dataset == 'CIFAR-FS' or opt.dataset == 'FC100':
         opt.transform = 'D'
-
-    if opt.use_trainval:
-        opt.trial = opt.trial + '_trainval'
-
-    if opt.use_all:
-        opt.trial = opt.trial + '_all'
 
     # set the path according to the environment
     if not opt.model_path:
@@ -268,9 +260,6 @@ def parse_option_pretrain():
 
     if opt.swa:
         opt.model_name = '{}_swa'.format(opt.model_name)
-
-    if opt.mix_up:
-        opt.model_name = '{}_mixup'.format(opt.model_name)
 
     opt.model_name = '{}_trial_{}'.format(opt.model_name, opt.trial)
 

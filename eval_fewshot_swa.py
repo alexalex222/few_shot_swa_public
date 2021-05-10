@@ -17,7 +17,7 @@ from dataset.cifar import MetaCIFAR100
 from dataset.cub import MetaCUBImageFolder
 from dataset.transform_cfg import transforms_options
 
-from eval.meta_eval import meta_test, meta_test_lr_torch
+from eval.meta_eval import meta_test
 from eval.util import plot_calibration_error
 from eval.util import calc_calibration_score
 from util import parse_option_eval
@@ -43,11 +43,7 @@ def main():
                                                   fix_seed=False),
                                      batch_size=1, shuffle=False, drop_last=False,
                                      num_workers=opt.num_workers)
-
-        if opt.use_trainval:
-            n_cls = 80
-        else:
-            n_cls = 64
+        n_cls = 64
     elif opt.dataset == 'tieredImageNet':
         train_trans, test_trans = transforms_options['A']
         meta_testloader = DataLoader(MetaTieredImageNet(args=opt, partition='test',
@@ -56,10 +52,7 @@ def main():
                                                         fix_seed=False),
                                      batch_size=1, shuffle=False, drop_last=False,
                                      num_workers=opt.num_workers)
-        if opt.use_trainval:
-            n_cls = 448
-        else:
-            n_cls = 351
+        n_cls = 351
     elif opt.dataset == 'CIFAR-FS' or opt.dataset == 'FC100':
         train_trans, test_trans = transforms_options['D']
         meta_testloader = DataLoader(MetaCIFAR100(args=opt, partition='test',
@@ -68,15 +61,13 @@ def main():
                                                   fix_seed=False),
                                      batch_size=1, shuffle=False, drop_last=False,
                                      num_workers=opt.num_workers)
-        if opt.use_trainval:
-            n_cls = 80
+
+        if opt.dataset == 'CIFAR-FS':
+            n_cls = 64
+        elif opt.dataset == 'FC100':
+            n_cls = 60
         else:
-            if opt.dataset == 'CIFAR-FS':
-                n_cls = 64
-            elif opt.dataset == 'FC100':
-                n_cls = 60
-            else:
-                raise NotImplementedError('dataset not supported: {}'.format(opt.dataset))
+            raise NotImplementedError('dataset not supported: {}'.format(opt.dataset))
     else:
         raise NotImplementedError(opt.dataset)
 
@@ -107,11 +98,13 @@ def main():
     test_time = time.time() - start
     print('test_acc_feat: {:.4f}, test_std: {:.4f}, time: {:.1f}'.format(test_acc, test_std, test_time))
 
-    few_shot_eval_results = {
+
+    """
+     few_shot_eval_results = {
         'test_acc': test_acc,
         'test_std': test_std
     }
-
+    
     save_dir = os.path.dirname(opt.model_path)
     torch.save(few_shot_eval_results, os.path.join(save_dir, 'few_shot_eval_results.pth'))
 
@@ -124,6 +117,7 @@ def main():
 
     ece, mce, brier_score = calc_calibration_score(y_prob, y_true, n_bins=20)
     print('ECE: {0}, MCE: {1}, BRI: {2}'.format(ece, mce, brier_score))
+    """
 
 
 if __name__ == '__main__':

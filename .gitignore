@@ -139,4 +139,4 @@ train_test.bat
 train_test.sh
 
 figs/
-image_data/
+data/

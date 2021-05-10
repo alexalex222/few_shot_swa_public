@@ -1,14 +1,10 @@
 # %%
-import os
-import sys
 import numpy as np
 import torch
 from torch.optim.swa_utils import AveragedModel
 from tqdm import tqdm
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import BayesianRidge
-
-sys.path.append(os.getcwd() + '/..')
 from models.nn_regression import RegressionNN
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -23,10 +19,7 @@ if __name__ == '__main__':
     args.activation_function = 'erf'
 
     # %%
-    if os.name == 'nt':
-        sin_data = torch.load('D:\\Temp\\torch_dataset\\regression\\sin_data_few_shot.pt')
-    else:
-        sin_data = torch.load('/media/kuilin/research/temp/torch_dataset/regression/sin_data_few_shot.pt')
+    sin_data = torch.load('./data/regression/sin_data_few_shot.pt')
     x_test = sin_data['x_test']
     y_test = sin_data['y_test']
     y_true_test = sin_data['y_true_test']

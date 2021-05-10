@@ -28,10 +28,7 @@ model = model.to(device)
 model_swa = model_swa.to(device)
 
 # %% load data
-if os.name == 'nt':
-    test_file_path = 'D:\\data\\research\\image_data\\QMUL\\qmul_test.pickle'
-else:
-    test_file_path = '/media/kuilin/research/data/QMUL//qmul_test.pickle'
+test_file_path = './QMUL//qmul_test.pickle'
 
 test_file = open(test_file_path, 'rb')
 test_data = pickle.load(test_file)

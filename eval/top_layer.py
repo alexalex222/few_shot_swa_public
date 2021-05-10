@@ -30,6 +30,7 @@ class LogisticRegressionTemperature(nn.Module):
 
         self.eval()
 
+
 def fit_classifier(classifier, x, y, max_iter=1000):
     classifier.train()
     classifier.cuda()
@@ -45,33 +46,4 @@ def fit_classifier(classifier, x, y, max_iter=1000):
 
     classifier.eval()
     # print(classifier.scale_factor)
-
-
-@variational_estimator
-class BayesianLogisticClassification(nn.Module):
-    def __init__(self, num_classes=5, feature_dim=1024):
-        super().__init__()
-        self.fc = BayesianLinear(feature_dim, num_classes)
-
-    def forward(self, x):
-        out = self.fc(x)
-        return out
-
-
-def fit_bayesian_classifier(classifier, x, y, max_iter=1000):
-    classifier.train()
-    classifier.cuda()
-    optimizer = optim.Adam(classifier.parameters(), lr=0.001)
-    criterion = nn.CrossEntropyLoss()
-
-    for i in range(max_iter):
-        optimizer.zero_grad()
-        loss = classifier.sample_elbo(inputs=x,
-                                      labels=y,
-                                      criterion=criterion,
-                                      sample_nbr=3,
-                                      complexity_cost_weight=1.0 / (x.shape[0]))
-
-        loss.backward()
-        optimizer.step()
 
