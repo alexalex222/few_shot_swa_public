@@ -96,7 +96,7 @@ training_iter = 40*300
 swa_iter = 1000
 
 time_string = time.strftime("%Y%m%d_%H%M%S", time.localtime())
-logger = SummaryWriter(log_dir=os.path.join('/media/kuilin/research/temp/tb_log', time_string))
+logger = SummaryWriter(log_dir=os.path.join('./pretrained_models', time_string))
 
 log_interval = 40
 avg_train_loss = 0

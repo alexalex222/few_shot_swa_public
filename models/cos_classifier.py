@@ -42,23 +42,3 @@ class CosineClassifier(nn.Module):
 
         return scores
 
-# %%
-if __name__ == '__main__':
-    file_path = '/media/kuilin/research/temp/torch_dataset/classification/one_task_data.pt'
-
-    tensor_dict = torch.load(file_path)
-    x_train = tensor_dict['support_features']
-    y_train = tensor_dict['support_ys'].view(-1).cuda()
-    x_test = tensor_dict['query_features']
-    y_test = tensor_dict['query_ys'].view(-1).cuda()
-
-    num_classes = 5
-
-    clf = CosineClassifier(feature_dim=x_train.shape[-1], num_class=num_classes)
-    clf.fit(x_train, y_train)
-    pred_scores = clf(x_test)
-    soft_max = torch.nn.Softmax(dim=1)
-    pred_prob = soft_max(pred_scores)
-    _, pred_idx = torch.max(pred_prob, dim=1)
-    accuracy = torch.sum(pred_idx == y_test) / x_test.shape[0]
-    print(accuracy)

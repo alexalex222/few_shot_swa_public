@@ -234,28 +234,28 @@ class ResNet(nn.Module):
             return x
 
 
-def resnet12_db(keep_prob=1.0, avg_pool=False, **kwargs):
+def resnet12(keep_prob=1.0, avg_pool=False, **kwargs):
     """Constructs a ResNet-12 model.
     """
     model = ResNet(BasicBlock, [1, 1, 1, 1], keep_prob=keep_prob, avg_pool=avg_pool, **kwargs)
     return model
 
 
-def resnet18_db(keep_prob=1.0, avg_pool=False, **kwargs):
+def resnet18(keep_prob=1.0, avg_pool=False, **kwargs):
     """Constructs a ResNet-18 model.
     """
     model = ResNet(BasicBlock, [1, 1, 2, 2], keep_prob=keep_prob, avg_pool=avg_pool, **kwargs)
     return model
 
 
-def resnet24_db(keep_prob=1.0, avg_pool=False, **kwargs):
+def resnet24(keep_prob=1.0, avg_pool=False, **kwargs):
     """Constructs a ResNet-24 model.
     """
     model = ResNet(BasicBlock, [2, 2, 2, 2], keep_prob=keep_prob, avg_pool=avg_pool, **kwargs)
     return model
 
 
-def resnet50_db(keep_prob=1.0, avg_pool=False, **kwargs):
+def resnet50(keep_prob=1.0, avg_pool=False, **kwargs):
     """Constructs a ResNet-50 model.
     indeed, only (3 + 4 + 6 + 3) * 3 + 1 = 49 layers
     """
@@ -263,7 +263,7 @@ def resnet50_db(keep_prob=1.0, avg_pool=False, **kwargs):
     return model
 
 
-def resnet101_db(keep_prob=1.0, avg_pool=False, **kwargs):
+def resnet101(keep_prob=1.0, avg_pool=False, **kwargs):
     """Constructs a ResNet-101 model.
     indeed, only (3 + 4 + 23 + 3) * 3 + 1 = 100 layers
     """
@@ -271,28 +271,28 @@ def resnet101_db(keep_prob=1.0, avg_pool=False, **kwargs):
     return model
 
 
-def seresnet12_db(keep_prob=1.0, avg_pool=False, **kwargs):
+def seresnet12(keep_prob=1.0, avg_pool=False, **kwargs):
     """Constructs a ResNet-12 model.
     """
     model = ResNet(BasicBlock, [1, 1, 1, 1], keep_prob=keep_prob, avg_pool=avg_pool, use_se=True, **kwargs)
     return model
 
 
-def seresnet18_db(keep_prob=1.0, avg_pool=False, **kwargs):
+def seresnet18(keep_prob=1.0, avg_pool=False, **kwargs):
     """Constructs a ResNet-18 model.
     """
     model = ResNet(BasicBlock, [1, 1, 2, 2], keep_prob=keep_prob, avg_pool=avg_pool, use_se=True, **kwargs)
     return model
 
 
-def seresnet24_db(keep_prob=1.0, avg_pool=False, **kwargs):
+def seresnet24(keep_prob=1.0, avg_pool=False, **kwargs):
     """Constructs a ResNet-24 model.
     """
     model = ResNet(BasicBlock, [2, 2, 2, 2], keep_prob=keep_prob, avg_pool=avg_pool, use_se=True, **kwargs)
     return model
 
 
-def seresnet50_db(keep_prob=1.0, avg_pool=False, **kwargs):
+def seresnet50(keep_prob=1.0, avg_pool=False, **kwargs):
     """Constructs a ResNet-50 model.
     indeed, only (3 + 4 + 6 + 3) * 3 + 1 = 49 layers
     """
@@ -300,7 +300,7 @@ def seresnet50_db(keep_prob=1.0, avg_pool=False, **kwargs):
     return model
 
 
-def seresnet101_db(keep_prob=1.0, avg_pool=False, **kwargs):
+def seresnet101(keep_prob=1.0, avg_pool=False, **kwargs):
     """Constructs a ResNet-101 model.
     indeed, only (3 + 4 + 23 + 3) * 3 + 1 = 100 layers
     """
@@ -318,16 +318,16 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     model_dict = {
-        'resnet12': resnet12_db,
-        'resnet18': resnet18_db,
-        'resnet24': resnet24_db,
-        'resnet50': resnet50_db,
-        'resnet101': resnet101_db,
-        'seresnet12': seresnet12_db,
-        'seresnet18': seresnet18_db,
-        'seresnet24': seresnet24_db,
-        'seresnet50': seresnet50_db,
-        'seresnet101': seresnet101_db,
+        'resnet12': resnet12,
+        'resnet18': resnet18,
+        'resnet24': resnet24,
+        'resnet50': resnet50,
+        'resnet101': resnet101,
+        'seresnet12': seresnet12,
+        'seresnet18': seresnet18,
+        'seresnet24': seresnet24,
+        'seresnet50': seresnet50,
+        'seresnet101': seresnet101,
     }
 
     import torch.autograd.profiler as profiler
@@ -335,7 +335,7 @@ if __name__ == '__main__':
     from torch.cuda.amp import GradScaler
     import torch.optim as optim
 
-    model = resnet12_db(avg_pool=True, drop_rate=0.1, dropblock_size=5, num_classes=100).cuda()
+    model = resnet12(avg_pool=True, drop_rate=0.1, dropblock_size=5, num_classes=100).cuda()
     data = torch.randn(64, 3, 224, 224).cuda()
     target = torch.ones(64, dtype=torch.long).cuda()
     optimizer = optim.SGD(model.parameters(),

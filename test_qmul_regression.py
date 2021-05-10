@@ -1,5 +1,4 @@
 # %%
-import os
 import pickle
 import numpy as np
 from PIL import Image
@@ -107,4 +106,3 @@ mse_all_swa_np = np.array(all_mse_swa)
 print('SWA')
 print('Mean MSE: ', mse_all_swa_np.mean())
 print('MSE std: ', mse_all_swa_np.std())
-

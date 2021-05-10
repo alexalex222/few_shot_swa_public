@@ -119,7 +119,7 @@ def main():
     for epoch in range(1, opt.epochs + 1):
         print("==> training...")
         time1 = time.time()
-        if opt.model == 'resnet12_db':
+        if opt.model == 'resnet12':
             train_acc, train_loss = train_mix_precision(epoch, train_loader, model, criterion, optimizer, scaler, opt)
         elif opt.model == 'wrn_28_10':
             train_acc, train_loss = train_mix_precision(epoch, train_loader, model, criterion, optimizer, scaler, opt)

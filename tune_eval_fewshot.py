@@ -11,7 +11,6 @@ from models.util import create_model
 from dataset.mini_imagenet import MetaImageNet
 from dataset.tiered_imagenet import MetaTieredImageNet
 from dataset.cifar import MetaCIFAR100
-from dataset.cub import MetaCUBImageFolder
 from dataset.transform_cfg import transforms_options
 
 from eval.meta_eval import meta_test
@@ -41,11 +40,7 @@ def main():
                                                   fix_seed=False),
                                      batch_size=1, shuffle=False, drop_last=False,
                                      num_workers=opt.num_workers)
-
-        if opt.use_trainval:
-            n_cls = 80
-        else:
-            n_cls = 64
+        n_cls = 64
     elif opt.dataset == 'tieredImageNet':
         train_trans, test_trans = transforms_options['A']
         meta_testloader = DataLoader(MetaTieredImageNet(args=opt, partition='val',
@@ -54,10 +49,7 @@ def main():
                                                         fix_seed=False),
                                      batch_size=1, shuffle=False, drop_last=False,
                                      num_workers=opt.num_workers)
-        if opt.use_trainval:
-            n_cls = 448
-        else:
-            n_cls = 351
+        n_cls = 351
     elif opt.dataset == 'CIFAR-FS' or opt.dataset == 'FC100':
         train_trans, test_trans = transforms_options['D']
         meta_testloader = DataLoader(MetaCIFAR100(args=opt, partition='val',
@@ -66,31 +58,14 @@ def main():
                                                   fix_seed=False),
                                      batch_size=1, shuffle=False, drop_last=False,
                                      num_workers=opt.num_workers)
-        if opt.use_trainval:
-            n_cls = 80
-        else:
-            if opt.dataset == 'CIFAR-FS':
-                n_cls = 64
-            elif opt.dataset == 'FC100':
-                n_cls = 60
-            else:
-                raise NotImplementedError('dataset not supported: {}'.format(opt.dataset))
 
-    elif opt.dataset == 'CUB':
-        train_trans, test_trans = transforms_options['F']
-        if opt.cross:
-            class_start_idx = 0
+        if opt.dataset == 'CIFAR-FS':
+            n_cls = 64
+        elif opt.dataset == 'FC100':
+            n_cls = 60
         else:
-            class_start_idx = 150
-        meta_testloader = DataLoader(MetaCUBImageFolder(opt,
-                                                        class_start_idx=class_start_idx,
-                                                        class_end_idx=199,
-                                                        train_transform=train_trans,
-                                                        test_transform=test_trans,
-                                                        fix_seed=False),
-                                     batch_size=1, shuffle=False, drop_last=False,
-                                     num_workers=opt.num_workers)
-        n_cls = 100
+            raise NotImplementedError('dataset not supported: {}'.format(opt.dataset))
+
     else:
         raise NotImplementedError(opt.dataset)
 

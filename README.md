@@ -38,10 +38,10 @@ Download and unzip [miniImageNet](https://www.dropbox.com/sh/6yd1ygtyc3yd981/AAB
 
 To learn the representation from training data:
 ```
-python pretrain_swa_novel.py --dataset miniImageNet --model resnet12_db --epochs 200 --swa_start 100 --num_workers 4 --swa
+python pretrain_swa_novel.py --dataset miniImageNet --model resnet12 --epochs 200 --swa_start 100 --num_workers 4 --swa
 ```
 
 Meta-test:
 ```
-python eval_fewshot_swa.py --dataset miniImageNet --model resnet12_db --model_path "./pretrained_models/resnet12_db_miniImageNet_lr_0.05_decay_0.0005_trans_A_swa_trial_11/ckpt_swa.pth" --n_shots 5 --swa
+python eval_fewshot_swa.py --dataset miniImageNet --model resnet12 --model_path "./pretrained_models/resnet12_miniImageNet_lr_0.05_decay_0.0005_trans_A_swa_trial_1/resnet12_db_swa_last.pth" --n_shots 5 --swa
 ```

@@ -6,8 +6,8 @@ def create_model(name, n_cls, dataset='miniImageNet'):
     if dataset == 'miniImageNet' or dataset == 'tieredImageNet':
         if name.endswith('v2') or name.endswith('v3'):
             model = model_dict[name](num_classes=n_cls)
-        elif name.endswith('db'):
-            print('use resnet with drop block')
+        elif name.startswith('resnet'):
+            print('use resnet')
             model = model_dict[name](avg_pool=True, drop_rate=0.1, dropblock_size=5, num_classes=n_cls)
         elif name.startswith('wrn'):
             model = model_dict[name](num_classes=n_cls)
@@ -16,8 +16,8 @@ def create_model(name, n_cls, dataset='miniImageNet'):
         else:
             raise NotImplementedError('model {} not supported in dataset {}:'.format(name, dataset))
     elif dataset == 'CIFAR-FS' or dataset == 'FC100':
-        if name.endswith('db'):
-            print('use resnet with drop block')
+        if name.startswith('resnet'):
+            print('use resnet')
             model = model_dict[name](avg_pool=True, drop_rate=0.1, dropblock_size=2, num_classes=n_cls)
         elif name.startswith('wrn'):
             model = model_dict[name](num_classes=n_cls)
