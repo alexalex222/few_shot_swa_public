@@ -250,7 +250,7 @@ def generate_sin_data_matrix(num_tasks=1000, num_samples_per_task=200):
         'y_true_test': y_true_test
     }
 
-    torch.save(sin_data, 'D:\\Temp\\torch_dataset\\regression\\sin_data_few_shot.pt')
+    torch.save(sin_data, './data/regression/sin_data_few_shot.pt')
 
 
 # %%

@@ -20,7 +20,7 @@ test_phase_test_tuple = {'data': np.ndarray(shape=(len(test_people), 133, 100, 1
                           'labels': np.ndarray(shape=(len(test_people), 133), dtype=np.float32)}
 
 # %%
-root_folder = 'D:/Research/image_data/QMUL/images'
+root_folder = './data/QMUL/images'
 
 # %%
 for i in tqdm(range(len(train_people))):
@@ -40,7 +40,7 @@ for i in tqdm(range(len(train_people))):
         train_phase_train_tuple['labels'][i][j] = pitch_norm
 
 # open a file, where you ant to store the data
-pickle_file = open('D:\\Research\\image_data\\QMUL\\qmul_train.pickle', 'wb')
+pickle_file = open('./data/QMUL/qmul_train.pickle', 'wb')
 pickle.dump(train_phase_train_tuple, pickle_file)
 pickle_file.close()
 
@@ -62,6 +62,6 @@ for i in tqdm(range(len(test_people))):
         test_phase_test_tuple['labels'][i][j] = pitch_norm
 
 # open a file, where you ant to store the data
-pickle_file = open('D:\\Research\\image_data\\QMUL\\qmul_test.pickle', 'wb')
+pickle_file = open('./data/QMUL/qmul_test.pickle', 'wb')
 pickle.dump(test_phase_test_tuple, pickle_file)
 pickle_file.close()
