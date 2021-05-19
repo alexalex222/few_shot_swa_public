@@ -34,7 +34,7 @@ def main():
     if opt.dataset == 'miniImageNet':
         #  29 30 35 36
         train_trans, test_trans = transforms_options['A']
-        meta_testloader = DataLoader(MetaImageNet(args=opt, partition='val',
+        meta_val_loader = DataLoader(MetaImageNet(args=opt, partition='val',
                                                   train_transform=train_trans,
                                                   test_transform=test_trans,
                                                   fix_seed=False),
@@ -43,7 +43,7 @@ def main():
         n_cls = 64
     elif opt.dataset == 'tieredImageNet':
         train_trans, test_trans = transforms_options['A']
-        meta_testloader = DataLoader(MetaTieredImageNet(args=opt, partition='val',
+        meta_val_loader = DataLoader(MetaTieredImageNet(args=opt, partition='val',
                                                         train_transform=train_trans,
                                                         test_transform=test_trans,
                                                         fix_seed=False),
@@ -52,7 +52,7 @@ def main():
         n_cls = 351
     elif opt.dataset == 'CIFAR-FS' or opt.dataset == 'FC100':
         train_trans, test_trans = transforms_options['D']
-        meta_testloader = DataLoader(MetaCIFAR100(args=opt, partition='val',
+        meta_val_loader = DataLoader(MetaCIFAR100(args=opt, partition='val',
                                                   train_transform=train_trans,
                                                   test_transform=test_trans,
                                                   fix_seed=False),
@@ -89,11 +89,11 @@ def main():
         opt.reg = reg_coeff
         if opt.swa:
             model_swa.load_state_dict(ckpt['model'])
-            (test_acc, test_std), y_pred, y_prob, y_true, _, _ = meta_test(model_swa, meta_testloader,
+            (test_acc, test_std), y_pred, y_prob, y_true, _, _ = meta_test(model_swa, meta_val_loader,
                                                                      classifier=opt.classifier, opt=opt)
         else:
             model.load_state_dict(ckpt['model'])
-            (test_acc, test_std), y_pred, y_prob, y_true, _, _ = meta_test(model, meta_testloader,
+            (test_acc, test_std), y_pred, y_prob, y_true, _, _ = meta_test(model, meta_val_loader,
                                                                      classifier=opt.classifier, opt=opt)
 
         print('Reg coeff: {0}, acc: {1}'.format(reg_coeff, test_acc))
@@ -117,11 +117,11 @@ def main():
         opt.temp = current_temperature
         if opt.swa:
             model_swa.load_state_dict(ckpt['model'])
-            (test_acc, test_std), y_pred, y_prob, y_true, _, _ = meta_test(model_swa, meta_testloader,
+            (test_acc, test_std), y_pred, y_prob, y_true, _, _ = meta_test(model_swa, meta_val_loader,
                                                                            classifier=opt.classifier, opt=opt)
         else:
             model.load_state_dict(ckpt['model'])
-            (test_acc, test_std), y_pred, y_prob, y_true, _, _ = meta_test(model, meta_testloader,
+            (test_acc, test_std), y_pred, y_prob, y_true, _, _ = meta_test(model, meta_val_loader,
                                                                            classifier=opt.classifier, opt=opt)
 
         y_pred = np.concatenate(y_pred, axis=0)
@@ -150,15 +150,6 @@ def main():
         current_temperature += 0.1
 
     print('Best temperature: ', best_temperature)
-
-    fig, ax = plt.subplots()
-    ax.plot(ece_all, label='ECE')
-    ax.plot(mce_all, label='MCE')
-    ax.plot(bri_all, label='BRI')
-    ax.legend()
-    ax.set_xlabel("Temperature")
-    ax.set_ylabel("Calibration Score")
-    plt.show()
 
 
 if __name__ == '__main__':
