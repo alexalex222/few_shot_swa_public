@@ -177,7 +177,7 @@ def parse_option_pretrain():
 
     # optimization
     parser.add_argument('--learning_rate', type=float, default=0.05, help='learning rate')
-    parser.add_argument('--lr_decay_epochs', type=str, default='60,80', help='where to decay lr, can be a list')
+    parser.add_argument('--lr_decay_epochs', type=str, default='60,80,90', help='where to decay lr, can be a list')
     parser.add_argument('--lr_decay_rate', type=float, default=0.1, help='decay rate for learning rate')
     parser.add_argument('--weight_decay', type=float, default=5e-4, help='weight decay')
     parser.add_argument('--momentum', type=float, default=0.9, help='momentum')
