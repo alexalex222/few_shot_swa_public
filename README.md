@@ -1,4 +1,6 @@
-# Meta-free representation learning
+# Few-shot learning
+
+Source code for [Meta-free few-shot learning via representation learning with weight averaging](https://arxiv.org/pdf/2204.12466.pdf).
 
 Requirements
 -------------
